@@ -1,10 +1,14 @@
 import json
 
 print("Welcome to Review Stream")
-tasks = []
 
-with open("tasks.json", "r") as file:
+
+try:
+    with open("tasks.json", "r") as file:
             tasks = json.load(file)
+except FileNotFoundError:
+    tasks = []
+
 
 def add_a_task():
     add_task = True
@@ -23,7 +27,8 @@ def add_a_task():
         keep_adding = input("Would you like to add another task? (yes/no): ").lower()
         if keep_adding != "yes":
             add_task = False
-
+    with open("tasks.json", "w") as file:
+            json.dump(tasks, file, indent=4)        
 
 def view_tasks():
     if not tasks:
@@ -45,9 +50,11 @@ def complete_task():
         if work["Course"] == course_to_complete and work["Task"] == task_to_complete:
             work["Completed"] = True
             print(f"Course {course_to_complete} {task_to_complete} has been completed")
+            with open("tasks.json", "w") as file:
+                json.dump(tasks, file, indent=4)
             return
     print(f"Course {course_to_complete} or task {task_to_complete} not found.")
-
+    
 
 def exit_program():
     with open("tasks.json", "w") as file:
