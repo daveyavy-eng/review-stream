@@ -1,6 +1,10 @@
+import json
+
 print("Welcome to Review Stream")
 tasks = []
 
+with open("tasks.json", "r") as file:
+            tasks = json.load(file)
 
 def add_a_task():
     add_task = True
@@ -12,7 +16,8 @@ def add_a_task():
         work = {
             "Course": course,
             "Task": task,
-            "Due Date": due_date
+            "Due Date": due_date,
+            "Completed": False
         }
         tasks.append(work)
         keep_adding = input("Would you like to add another task? (yes/no): ").lower()
@@ -25,23 +30,28 @@ def view_tasks():
         print("No tasks available.")
         return
     for task in tasks:
-        print("\n")
-        print(f"Course: {task['Course']}, Task: {task['Task']}, Due Date: {task['Due Date']}")
-        print("\n")
+        status = "X" if task["Completed"] else " "
+        print(f"[{status}] {task['Course']} - {task['Task']} - {task['Due Date']}")
+    print("\n")
+
 
 def complete_task():
     if not tasks:
         print("No tasks available to complete.")
         return
-    completed_task = input("Which course would you like to complete? (Enter the course name): ")
+    course_to_complete = input("Which course would you like to complete? (Enter the course name): ")
+    task_to_complete = input("Which task would you like to complete? (Enter the task name): ")
     for work in tasks:
-        if work["Course"] == completed_task:
-            tasks.remove(work)
-            print(f"Course {completed_task} has been completed and removed.")
+        if work["Course"] == course_to_complete and work["Task"] == task_to_complete:
+            work["Completed"] = True
+            print(f"Course {course_to_complete} {task_to_complete} has been completed")
             return
-    print(f"Course {completed_task} not found.")
+    print(f"Course {course_to_complete} or task {task_to_complete} not found.")
+
 
 def exit_program():
+    with open("tasks.json", "w") as file:
+            json.dump(tasks, file, indent=4)
     print("\n" * 2)
     print("...Goodbye...")
     exit()
@@ -60,3 +70,5 @@ while True:
         exit_program()
     else:
         print("Invalid choice. Please try again.")
+
+
