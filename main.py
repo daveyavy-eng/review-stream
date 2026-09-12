@@ -2,12 +2,17 @@ import json
 
 print("Welcome to Review Stream")
 
-
 try:
     with open("tasks.json", "r") as file:
         tasks = json.load(file)
+
 except FileNotFoundError:
     tasks = []
+
+
+def json_write():
+    with open("tasks.json", "w") as file:
+        json.dump(tasks, file, indent=4)
 
 
 def add_a_task():
@@ -29,8 +34,8 @@ def add_a_task():
         keep_adding = input("Would you like to add another task? (yes/no): ").lower()
         if keep_adding != "yes":
             add_task = False
-    with open("tasks.json", "w") as file:
-        json.dump(tasks, file, indent=4)        
+    json_write()
+
 
 
 def view_tasks():
@@ -61,17 +66,36 @@ def complete_task():
         if number == number_to_complete:
             work["Completed"] = True
             print(f"Task number {number_to_complete} has been completed")
-            with open("tasks.json", "w") as file:
-                json.dump(tasks, file, indent=4)
+            json_write()
             return
         
     print(f"Task number {number_to_complete} not found.")
+
+def delete_task():
+    
+    if not tasks:
+        print("No tasks available to delete.")
+        return
+    
+    try:
+        number_to_delete = int(input("Which task number would you like to delete? (Enter the task number): "))
+    except ValueError:
+        print("Invalid task number. Please enter a valid number.")
+        return
+
+    for number, work in enumerate(tasks, start=1):
+        if number == number_to_delete:
+            tasks.remove(work)
+            print(f"Task number {number_to_delete} has been deleted")
+            json_write()
+            return
+        
+    print(f"Task number {number_to_delete} not found.")
     
 
 def exit_program():
 
-    with open("tasks.json", "w") as file:
-        json.dump(tasks, file, indent=4)
+    json_write()
 
     print("\n" * 2)
     print("...Goodbye...")
@@ -79,7 +103,7 @@ def exit_program():
 
 
 while True:
-    choice = input("Would you like to add a task, view tasks, complete a task, or exit? (add/view/complete/exit): ").lower()
+    choice = input("Would you like to add a task, view tasks, complete a task, delete a task, or exit? (add/view/complete/delete/exit): ").lower()
 
     if choice == "add":
         add_a_task()
@@ -87,6 +111,8 @@ while True:
         view_tasks()
     elif choice == "complete":
         complete_task()
+    elif choice == "delete":
+        delete_task()
     elif choice == "exit":
         exit_program()
     else:

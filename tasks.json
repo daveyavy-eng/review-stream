@@ -1,14 +1,32 @@
 [
     {
-        "Course": "math",
-        "Task": "eat",
-        "Due Date": "1",
+        "Course": "Math 265",
+        "Task": "Assignment",
+        "Due Date": "July 6th",
         "Completed": false
     },
     {
-        "Course": "anth",
-        "Task": "human",
-        "Due Date": "dec",
+        "Course": "Econ 201",
+        "Task": "Portfolio",
+        "Due Date": "Aug 1st",
+        "Completed": false
+    },
+    {
+        "Course": "CPSC 233",
+        "Task": "Code",
+        "Due Date": "Feb 21st",
+        "Completed": true
+    },
+    {
+        "Course": "ANTH 201",
+        "Task": "Human Evolution",
+        "Due Date": "March 4th",
+        "Completed": false
+    },
+    {
+        "Course": "math 211",
+        "Task": "data",
+        "Due Date": "oct 21",
         "Completed": false
     }
 ]
